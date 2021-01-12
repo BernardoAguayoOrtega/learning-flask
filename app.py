@@ -1,12 +1,12 @@
 from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import Column, Integer, String, float
+from sqlalchemy import Column, Integer, String, Float
 import os
 
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqqlite:///' + \
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
     os.path.join(basedir, 'planets.db')
 
 db = SQLAlchemy(app)
@@ -28,27 +28,31 @@ def db_drop():
 def db_seed():
     mercury = Planet(planet_name='Mercury',
                      planet_type='Class D',
-                     home_star='Sol', 
-                     mass=3.258e23, 
-                     radius=1516,
-                     distance=35.98e6)
-    
-    venus = Planet(planet_name='Venus',
-                     planet_type='Class k',
-                     home_star='Sol', 
-                     mass=3.258e23, 
+                     home_star='Sol',
+                     mass=3.258e23,
                      radius=1516,
                      distance=35.98e6)
 
+    venus = Planet(planet_name='Venus',
+                   planet_type='Class k',
+                   home_star='Sol',
+                   mass=3.258e23,
+                   radius=1516,
+                   distance=35.98e6)
+
     db.session.add(mercury)
     db.session.add(venus)
-    
+
     tes_user = User(first_name='Bernardo',
                     last_name='Aguayo',
                     email='test@test.com',
                     password='test')
-    
+
     db.session.add(tes_user)
+
+    db.session.commit()
+    print('Database seeded!')
+
 
 @app.route('/')
 def hello_world():
@@ -101,9 +105,9 @@ class Planet(db.Model):
     planet_name = Column(String)
     planet_type = Column(String)
     home_star = Column(String, unique=True)
-    mass = Column(float)
-    radius = Column(float)
-    distance = Column(float)
+    mass = Column(Float)
+    radius = Column(Float)
+    distance = Column(Float)
 
 
 if __name__ == '__main__':

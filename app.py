@@ -12,6 +12,44 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqqlite:///' + \
 db = SQLAlchemy(app)
 
 
+@app.cli.command('db_create')
+def db_create():
+    db.create_all()
+    print('Database created!')
+
+
+@app.cli.command('db_drop')
+def db_drop():
+    db.drop_all()
+    print('Datavase dropped!!!')
+
+
+@app.cli.command('db_seed')
+def db_seed():
+    mercury = Planet(planet_name='Mercury',
+                     planet_type='Class D',
+                     home_star='Sol', 
+                     mass=3.258e23, 
+                     radius=1516,
+                     distance=35.98e6)
+    
+    venus = Planet(planet_name='Venus',
+                     planet_type='Class k',
+                     home_star='Sol', 
+                     mass=3.258e23, 
+                     radius=1516,
+                     distance=35.98e6)
+
+    db.session.add(mercury)
+    db.session.add(venus)
+    
+    tes_user = User(first_name='Bernardo',
+                    last_name='Aguayo',
+                    email='test@test.com',
+                    password='test')
+    
+    db.session.add(tes_user)
+
 @app.route('/')
 def hello_world():
     return 'Hello World!'
@@ -57,7 +95,7 @@ class User(db.Model):
     password = Column(String)
 
 
-class User(db.Model):
+class Planet(db.Model):
     __tablename__ = 'planets'
     planet_id = Column(Integer, primary_key=True)
     planet_name = Column(String)

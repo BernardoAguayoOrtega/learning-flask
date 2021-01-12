@@ -6,7 +6,10 @@ import os
 
 app = Flask(__name__)
 basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqqlite:///' + os.path.join(basedir, 'planets.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqqlite:///' + \
+    os.path.join(basedir, 'planets.db')
+
+db = SQLAlchemy(app)
 
 
 @app.route('/')
@@ -41,6 +44,28 @@ def url_variables(name: str, age: int):
         return jsonify(message='Sorry ' + name + ", you are not old enough"), 401
     else:
         return jsonify(message='Welcome ' + name + ', you are old enough')
+
+# database models
+
+
+class User(db.Model):
+    __tablename__ = 'users'
+    id = Column(Integer, primary_key=True)
+    first_name = Column(String)
+    last_name = Column(String)
+    email = Column(String, unique=True)
+    password = Column(String)
+
+
+class User(db.Model):
+    __tablename__ = 'planets'
+    planet_id = Column(Integer, primary_key=True)
+    planet_name = Column(String)
+    planet_type = Column(String)
+    home_star = Column(String, unique=True)
+    mass = Column(float)
+    radius = Column(float)
+    distance = Column(float)
 
 
 if __name__ == '__main__':

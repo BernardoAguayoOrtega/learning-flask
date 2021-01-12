@@ -104,7 +104,7 @@ class Planet(db.Model):
     planet_id = Column(Integer, primary_key=True)
     planet_name = Column(String)
     planet_type = Column(String)
-    home_star = Column(String, unique=True)
+    home_star = Column(String)
     mass = Column(Float)
     radius = Column(Float)
     distance = Column(Float)
